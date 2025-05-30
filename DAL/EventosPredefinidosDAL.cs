@@ -31,7 +31,6 @@ namespace DAL
             return resultado;
         }
      
-        // ✅ Obtener todos los eventos
         public List<EventosPredefinidos> ObtenerEventos()
         {
             List<EventosPredefinidos> lista = new List<EventosPredefinidos>();

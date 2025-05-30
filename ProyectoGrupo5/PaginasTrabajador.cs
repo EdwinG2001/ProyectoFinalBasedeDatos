@@ -571,5 +571,3 @@ namespace ProyectoGrupo5
         }
     }
 }
-
-

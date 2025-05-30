@@ -96,13 +96,8 @@ namespace DAL
                     SqlParameter returnValueParam = new SqlParameter("@ReturnValue", SqlDbType.Int);
                     returnValueParam.Direction = ParameterDirection.ReturnValue;
                     _Comand.Parameters.Add(returnValueParam);
-
-                    _Comand.ExecuteNonQuery(); // Ejecutar el SP
-
-                    // Obtener el valor de retorno del parámetro de salida
+                    _Comand.ExecuteNonQuery();
                     resultado = (int)returnValueParam.Value;
-
-                    // Lanzar una excepción si el SP devolvió un error
                     if (resultado != 0)
                     {
                         throw new Exception($"Error al actualizar el estado de la orden (SP retorno: {resultado}).");

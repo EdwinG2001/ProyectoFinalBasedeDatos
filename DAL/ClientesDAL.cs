@@ -15,14 +15,10 @@ namespace DAL
                 using (SqlCommand _Comand = new SqlCommand("sp_RegistrarCliente", _conn as SqlConnection))
                 {
                     _Comand.CommandType = CommandType.StoredProcedure;
-
-                    // Agregar los datos del cliente
                     _Comand.Parameters.Add(new SqlParameter("@Nombre", pEn.Nombre));
                     _Comand.Parameters.Add(new SqlParameter("@Apellido", pEn.Apellido));
                     _Comand.Parameters.Add(new SqlParameter("@NumeroTelefono", pEn.NumeroTelefono));
                     _Comand.Parameters.Add(new SqlParameter("@Correo", pEn.Correo));
-
-                    // Agregar el nombre de usuario y contraseña del cliente
                     _Comand.Parameters.Add(new SqlParameter("@NombreUsuario", nombreUsuario));
                     _Comand.Parameters.Add(new SqlParameter("@Contrasena", contrasena));
 
