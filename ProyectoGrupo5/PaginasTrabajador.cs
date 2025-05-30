@@ -41,13 +41,10 @@ namespace ProyectoGrupo5
         }
         private void CargarOrdenesEnDataGridView()
         {
-            try
-            {
-                // 1. Obtener los datos de las órdenes
+            try { 
+
                 List<OrdenesEventos> ordenes = _ordenesBL.ObtenerTodasLasOrdenesConDetalles();
                 dgvOrdenes.DataSource = ordenes;
-
-                // 2. Definir el encabezado de las columnas
                 Dictionary<string, string> encabezados = new Dictionary<string, string>
         {
             { "OrdenId", "ID Orden" },
@@ -62,7 +59,6 @@ namespace ProyectoGrupo5
             { "EstadoOrden", "Estado" }
         };
 
-                // 3. Aplicar los encabezados y ocultar columnas no deseadas
                 foreach (DataGridViewColumn columna in dgvOrdenes.Columns)
                 {
                     if (encabezados.ContainsKey(columna.Name))
@@ -159,10 +155,7 @@ namespace ProyectoGrupo5
                     return;
                 }
 
-                // Obtener el ID de la orden seleccionada
                 long ordenId = Convert.ToInt64(dgvOrdenes.SelectedRows[0].Cells["OrdenId"].Value);
-
-                // Detectar qué radio button está marcado
                 string nuevoEstado = "";
                 if (rbEnProceso.Checked)
                     nuevoEstado = "EN PROCESO";
@@ -176,20 +169,15 @@ namespace ProyectoGrupo5
                     return;
                 }
 
-                // Confirmación opcional
                 DialogResult confirm = MessageBox.Show($"¿Deseas cambiar el estado de la orden {ordenId} a \"{nuevoEstado}\"?",
                                                        "Confirmar cambio", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
                 if (confirm == DialogResult.Yes)
                 {
-                    // Llamar al DAL
                     OrdenesEventosDAL dal = new OrdenesEventosDAL();
                     dal.ActualizarEstadoOrden(ordenId, nuevoEstado);
 
                     MessageBox.Show("Estado actualizado correctamente ✅", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    // Recargar el DataGridView
-                    CargarOrdenesEnDataGridView(); // Este método lo veremos abajo
+                    CargarOrdenesEnDataGridView(); 
                 }
             }
             catch (Exception ex)
@@ -284,7 +272,7 @@ namespace ProyectoGrupo5
         {
             if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
-                e.Handled = true; // Ignorar el carácter ingresado
+                e.Handled = true; 
             }
         }
         private async void btguardar1_Click(object sender, EventArgs e)
@@ -307,23 +295,16 @@ namespace ProyectoGrupo5
                 return;
             }
 
-            // Obtener el ID del evento seleccionado
             if (dataGridView1.SelectedRows[0].DataBoundItem is OrdenesEventos eventoSeleccionado)
             {
                 long eventoId = eventoSeleccionado.OrdenId;
-
-                // Bloquear el TextBox después de guardar
                 textBox1.ReadOnly = true;
-
-                // Calcular el tiempo en milisegundos (horas a minutos a segundos a milisegundos)
-                int tiempoEnMilisegundos = horasEstimadas * 60 * 1000; // Simulación: 1 hora = 1 minuto = 60000 ms
+                int tiempoEnMilisegundos = horasEstimadas * 60 * 1000; 
                 progressBar1.Maximum = tiempoEnMilisegundos;
                 progressBar1.Value = 0;
-
-                // Reiniciar la variable de control
                 _detenerAviso = false;
 
-                // Iniciar la simulación del progreso y los avisos
+
                 await Task.Run(async () =>
                 {
                     while (progressBar1.Value < progressBar1.Maximum && !_detenerAviso)
@@ -331,15 +312,10 @@ namespace ProyectoGrupo5
                         progressBar1.Invoke(new Action(() => progressBar1.Value += 1000)); // Actualizar cada segundo
                         await Task.Delay(1000);
                     }
-
-                    // Cuando el progreso termine, iniciar los avisos periódicos (si no se ha detenido)
                     while (!_detenerAviso)
                     {
-                        // Verificar si el formulario sigue visible (opcional)
                         if (!IsHandleCreated || IsDisposed)
                             break;
-
-                        // Mostrar el aviso cada 5 segundos
                         MessageBox.Show("AVISO: LA ORDEN NO HA SIDO TERMINADA, POR FAVOR TERMINALA.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         await Task.Delay(5000);
                     }
@@ -370,15 +346,10 @@ namespace ProyectoGrupo5
                 {
                     try
                     {
-                        // Llamar al método de la capa de BL
                         _ordenesBL.ActualizarEstadoOrden(ordenId, "CANCELADO");
 
                         MessageBox.Show($"El estado de la orden con ID {ordenId} ha sido cambiado a 'CANCELADO'.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                        // Recargar el DataGridView para reflejar el cambio
                         CargarOrdenesEnProcesoDataGridView1();
-
-                        // Reiniciar el ProgressBar y TextBox (opcional)
                         progressBar1.Value = 0;
                         textBox1.Text = "";
                         textBox1.ReadOnly = false;
