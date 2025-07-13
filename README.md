@@ -75,13 +75,7 @@ Generación de reportes para visualizar órdenes, clientes o quejas/sugerencias 
 📁 Listo para portafolio profesional
 
 ## 🙋‍♂️ Autor
-GRUPO #5
-EDWIN SAN LUCAS,
-KAROL MENA,
-JULIANA ENRIQUEZ,
-RAI MOSQUERA,
-NATHALY REASCO,
-JORDAN WILA.
+EDWIN SAN LUCAS
 ## GitHub · Ecuador 🇪🇨
 
 
